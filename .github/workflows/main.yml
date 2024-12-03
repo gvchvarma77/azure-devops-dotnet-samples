@@ -1,0 +1,19 @@
+name: Branch Naming Convention Enforcement
+
+on:
+  create: # Triggered when a branch is created
+    branches:
+      - "*"
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Branch Name
+        run: |
+          echo "Validating branch name: ${{ github.ref_name }}"
+          if [[ ! "${{ github.ref_name }}" =~ ^(feature|bugfix|hotfix)/ ]]; then
+            echo "Branch name '${{ github.ref_name }}' does not follow the naming convention."
+            exit 1
+          fi
+        shell: bash
